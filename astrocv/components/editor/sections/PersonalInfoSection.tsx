@@ -162,8 +162,8 @@ export default function PersonalInfoSection() {
 
       {/* Nom & Prénom */}
       <div className="field-group">
-        {field("Prénom", "firstName", "Sophie")}
         {field("Nom", "lastName", "Martin")}
+        {field("Prénom", "firstName", "Sophie")}
       </div>
 
       {/* Titre professionnel */}

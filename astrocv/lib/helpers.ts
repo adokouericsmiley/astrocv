@@ -95,7 +95,7 @@ export function getPdfFileName(firstName: string, lastName: string): string {
       .trim();
   const first = clean(firstName) || "Prenom";
   const last = clean(lastName) || "Nom";
-  return `CV_${first}_${last}.pdf`;
+  return `CV_${last}_${first}.pdf`;
 }
 
 /**

@@ -1,21 +1,20 @@
 "use client";
 // ============================================================
 // components/ui/ThemeSelector.tsx
-// Sélecteur de modèle (template), thème daisyUI et couleur accent
+// Sélecteur de thème daisyUI et couleur accent du CV
+// (Le choix de template est géré dans la Galerie de Modèles)
 // ============================================================
 
 import { useEffect } from "react";
 import { useCVStore } from "@/lib/store";
 import { ACCENT_COLORS, DAISY_THEMES } from "@/lib/helpers";
-import { TEMPLATES } from "@/components/templates";
-import { AccentColor, TemplateId } from "@/lib/types";
-import { Palette, LayoutTemplate } from "lucide-react";
+import { AccentColor } from "@/lib/types";
+import { Palette } from "lucide-react";
 
 export default function ThemeSelector() {
-  const { cv, setDaisyTheme, setAccentColor, setTemplate } = useCVStore();
+  const { cv, setDaisyTheme, setAccentColor } = useCVStore();
   const currentTheme = cv.settings.daisyTheme;
   const currentAccent = cv.settings.accentColor;
-  const currentTemplate = cv.settings.templateId;
 
   // Applique le thème daisyUI sur l'élément <html>
   useEffect(() => {
@@ -34,37 +33,12 @@ export default function ThemeSelector() {
 
       <div
         tabIndex={0}
-        className="dropdown-content z-50 menu p-4 shadow-2xl bg-base-100 rounded-2xl border border-base-300 w-80 mt-2 space-y-4"
+        className="dropdown-content z-50 menu p-4 shadow-2xl bg-base-100 rounded-2xl border border-base-300 w-72 mt-2 space-y-4"
       >
-        {/* Modèle de CV */}
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2 flex items-center gap-1.5">
-            <LayoutTemplate size={13} /> Modèle de CV
-          </p>
-          <div className="space-y-1.5">
-            {TEMPLATES.map((tmpl) => (
-              <button
-                key={tmpl.id}
-                onClick={() => setTemplate(tmpl.id)}
-                className={`w-full text-left p-2 rounded-xl border text-xs transition-all ${
-                  currentTemplate === tmpl.id
-                    ? "border-primary bg-primary/10 font-semibold text-primary"
-                    : "border-base-200 hover:border-base-300 text-base-content/80"
-                }`}
-              >
-                <div className="font-bold">{tmpl.name}</div>
-                <div className="text-[11px] opacity-70 font-normal">
-                  {tmpl.description}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Couleur accent du CV */}
         <div>
           <p className="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-2">
-            Couleur accent
+            Couleur accent du CV
           </p>
           <div className="flex gap-2 flex-wrap">
             {(Object.entries(ACCENT_COLORS) as [AccentColor, typeof ACCENT_COLORS[AccentColor]][]).map(

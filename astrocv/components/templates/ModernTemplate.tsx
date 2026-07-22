@@ -1,16 +1,13 @@
 "use client";
 // ============================================================
 // components/templates/ModernTemplate.tsx
-// Template "Modern" — design épuré avec bande colorée gauche,
-// colonnes asymétriques. Le seul composant à styler pour le PDF.
-// Toutes les unités sont en mm/pt pour un rendu A4 fidèle.
+// Template "Modern" avec Tailwind CSS v4
 // ============================================================
 
 import { CVData } from "@/lib/types";
 import { formatPeriod, groupSkillsByCategory } from "@/lib/helpers";
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 
-// SVG inline pour les icônes brand (retirées de lucide-react v1)
 const LinkedinIcon = ({ size = 11 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
     <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zm2-3a2 2 0 110-4 2 2 0 010 4z" />
@@ -24,54 +21,40 @@ const GithubIcon = ({ size = 11 }: { size?: number }) => (
 
 interface ModernTemplateProps {
   data: CVData;
-  /** Couleur accent sous forme HEX (ex: #6366f1) */
   accentHex: string;
 }
 
-// ── Composant icône inline contact ──────────────────────────
 function ContactItem({ icon: Icon, value }: { icon: React.ElementType; value: string }) {
   if (!value) return null;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "4px" }}>
-      <Icon size={11} style={{ flexShrink: 0, opacity: 0.8 }} />
-      <span style={{ fontSize: "10px", wordBreak: "break-all" }}>{value}</span>
+    <div className="flex items-center gap-1.5 mb-1 text-slate-600">
+      <Icon size={11} className="shrink-0 opacity-80" />
+      <span className="text-[10px] break-all">{value}</span>
     </div>
   );
 }
 
-// ── Barre de séparation de section ──────────────────────────
 function SectionTitle({ title, accentHex }: { title: string; accentHex: string }) {
   return (
-    <div style={{ marginBottom: "8px", marginTop: "14px" }}>
-      <h2 style={{
-        fontSize: "12px",
-        fontWeight: 700,
-        textTransform: "uppercase",
-        letterSpacing: "0.08em",
-        color: accentHex,
-        margin: 0,
-        paddingBottom: "4px",
-        borderBottom: `2px solid ${accentHex}`,
-      }}>
+    <div className="mb-2 mt-3.5">
+      <h2
+        className="text-[12px] font-bold uppercase tracking-wider pb-1 border-b-2"
+        style={{ color: accentHex, borderColor: accentHex }}
+      >
         {title}
       </h2>
     </div>
   );
 }
 
-// ── Barre de niveau compétence ───────────────────────────────
 function SkillBar({ level, accentHex }: { level: number; accentHex: string }) {
   return (
-    <div style={{ display: "flex", gap: "3px", marginTop: "2px" }}>
+    <div className="flex gap-1 mt-0.5">
       {[1, 2, 3, 4, 5].map((dot) => (
         <div
           key={dot}
-          style={{
-            width: "8px",
-            height: "8px",
-            borderRadius: "50%",
-            background: dot <= level ? accentHex : "#e2e8f0",
-          }}
+          className="w-2 h-2 rounded-full"
+          style={{ background: dot <= level ? accentHex : "#e2e8f0" }}
         />
       ))}
     </div>
@@ -82,73 +65,47 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
   const { personal, experiences, education, skills, languages, projects, interests, settings } = data;
   const skillGroups = groupSkillsByCategory(skills);
 
-  // Couleur sidebar (version très claire de l'accent)
-  const sidebarBg = "#f8fafc";
-  const sidebarBorderColor = accentHex;
-
   return (
-    <div
-      style={{
-        width: "210mm",
-        minHeight: "297mm",
-        fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
-        fontSize: "11px",
-        color: "#1e293b",
-        display: "flex",
-        flexDirection: "row",
-        background: "#fff",
-      }}
-    >
+    <div className="w-[210mm] min-h-[297mm] font-sans text-[11px] text-slate-800 flex flex-row bg-white">
       {/* ── Colonne gauche (sidebar) ── */}
       <div
-        style={{
-          width: "68mm",
-          minHeight: "297mm",
-          background: sidebarBg,
-          borderRight: `3px solid ${sidebarBorderColor}`,
-          padding: "20px 14px",
-          flexShrink: 0,
-        }}
+        className="w-[68mm] min-h-[297mm] bg-slate-50 border-r-4 p-5 shrink-0"
+        style={{ borderRightColor: accentHex }}
       >
         {/* Photo */}
         {settings.showPhoto && personal.photoUrl && (
-          <div style={{ textAlign: "center", marginBottom: "16px" }}>
+          <div className="text-center mb-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={personal.photoUrl}
               alt={`${personal.firstName} ${personal.lastName}`}
-              style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: `3px solid ${accentHex}`,
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.12)",
-                margin: "0 auto",
-                display: "block",
-              }}
+              className="w-20 h-20 rounded-full object-cover border-4 shadow-md mx-auto block"
+              style={{ borderColor: accentHex }}
             />
           </div>
         )}
 
         {/* Nom */}
-        <div style={{ marginBottom: "16px" }}>
-          <h1 style={{ fontSize: "16px", fontWeight: 800, color: accentHex, margin: 0, lineHeight: 1.2 }}>
-            {personal.firstName}
-          </h1>
-          <h1 style={{ fontSize: "16px", fontWeight: 800, color: "#1e293b", margin: 0, lineHeight: 1.2 }}>
+        <div className="mb-4">
+          <h1 className="text-base font-extrabold uppercase leading-tight" style={{ color: accentHex }}>
             {personal.lastName}
           </h1>
+          <h1 className="text-base font-extrabold text-slate-800 leading-tight">
+            {personal.firstName}
+          </h1>
           {personal.title && (
-            <p style={{ fontSize: "9.5px", color: "#64748b", marginTop: "4px", fontStyle: "italic", lineHeight: 1.4 }}>
+            <p className="text-[9.5px] text-slate-500 mt-1 italic leading-relaxed">
               {personal.title}
             </p>
           )}
         </div>
 
         {/* Contact */}
-        <div style={{ marginBottom: "16px", color: "#475569" }}>
-          <h3 style={{ fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: accentHex, marginBottom: "6px" }}>
+        <div className="mb-4">
+          <h3
+            className="text-[9px] font-bold uppercase tracking-wider mb-1.5"
+            style={{ color: accentHex }}
+          >
             Contact
           </h3>
           <ContactItem icon={Mail} value={personal.email} />
@@ -163,18 +120,21 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
 
         {/* Compétences */}
         {skills.length > 0 && (
-          <div style={{ marginBottom: "16px" }}>
-            <h3 style={{ fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: accentHex, marginBottom: "8px" }}>
+          <div className="mb-4">
+            <h3
+              className="text-[9px] font-bold uppercase tracking-wider mb-2"
+              style={{ color: accentHex }}
+            >
               Compétences
             </h3>
             {Object.entries(skillGroups).map(([category, catSkills]) => (
-              <div key={category} style={{ marginBottom: "8px" }}>
-                <p style={{ fontSize: "9px", fontWeight: 600, color: "#64748b", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div key={category} className="mb-2">
+                <p className="text-[9px] font-semibold text-slate-500 mb-1 uppercase tracking-wider">
                   {category}
                 </p>
                 {catSkills.map((skill) => (
-                  <div key={skill.id} style={{ marginBottom: "5px" }}>
-                    <span style={{ fontSize: "10px", color: "#334155" }}>{skill.name}</span>
+                  <div key={skill.id} className="mb-1.5">
+                    <span className="text-[10px] text-slate-700">{skill.name}</span>
                     <SkillBar level={skill.level} accentHex={accentHex} />
                   </div>
                 ))}
@@ -185,21 +145,20 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
 
         {/* Langues */}
         {languages.length > 0 && (
-          <div style={{ marginBottom: "16px" }}>
-            <h3 style={{ fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: accentHex, marginBottom: "8px" }}>
+          <div className="mb-4">
+            <h3
+              className="text-[9px] font-bold uppercase tracking-wider mb-2"
+              style={{ color: accentHex }}
+            >
               Langues
             </h3>
             {languages.map((lang) => (
-              <div key={lang.id} style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px", alignItems: "center" }}>
-                <span style={{ fontSize: "10px", color: "#334155" }}>{lang.name}</span>
-                <span style={{
-                  fontSize: "9px",
-                  fontWeight: 600,
-                  color: "#fff",
-                  background: accentHex,
-                  padding: "1px 5px",
-                  borderRadius: "10px",
-                }}>
+              <div key={lang.id} className="flex justify-between items-center mb-1">
+                <span className="text-[10px] text-slate-700">{lang.name}</span>
+                <span
+                  className="text-[9px] font-semibold text-white px-1.5 py-0.5 rounded-full"
+                  style={{ background: accentHex }}
+                >
                   {lang.level}
                 </span>
               </div>
@@ -210,18 +169,15 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
         {/* Centres d'intérêt */}
         {interests.length > 0 && (
           <div>
-            <h3 style={{ fontSize: "9px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: accentHex, marginBottom: "6px" }}>
+            <h3
+              className="text-[9px] font-bold uppercase tracking-wider mb-1.5"
+              style={{ color: accentHex }}
+            >
               Intérêts
             </h3>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+            <div className="flex flex-wrap gap-1">
               {interests.filter(Boolean).map((interest, i) => (
-                <span key={i} style={{
-                  fontSize: "9px",
-                  color: "#475569",
-                  background: "#e2e8f0",
-                  padding: "2px 7px",
-                  borderRadius: "10px",
-                }}>
+                <span key={i} className="text-[9px] text-slate-600 bg-slate-200 px-2 py-0.5 rounded-full">
                   {interest}
                 </span>
               ))}
@@ -231,17 +187,11 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
       </div>
 
       {/* ── Colonne droite (contenu principal) ── */}
-      <div style={{ flex: 1, padding: "20px 18px 20px 16px" }}>
+      <div className="flex-1 p-5 pt-5">
         {/* Accroche */}
         {personal.summary && (
-          <div style={{
-            background: "#f8fafc",
-            borderLeft: `3px solid ${accentHex}`,
-            padding: "8px 10px",
-            borderRadius: "0 6px 6px 0",
-            marginBottom: "4px",
-          }}>
-            <p style={{ fontSize: "10px", color: "#475569", lineHeight: 1.6, margin: 0 }}>
+          <div className="bg-slate-50 border-l-4 p-2.5 rounded-r-md mb-2" style={{ borderLeftColor: accentHex }}>
+            <p className="text-[10px] text-slate-600 leading-relaxed m-0">
               {personal.summary}
             </p>
           </div>
@@ -252,30 +202,30 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
           <div>
             <SectionTitle title="Expériences professionnelles" accentHex={accentHex} />
             {experiences.map((exp) => (
-              <div key={exp.id} style={{ marginBottom: "12px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div key={exp.id} className="mb-3">
+                <div className="flex justify-between items-start">
                   <div>
-                    <p style={{ fontSize: "11.5px", fontWeight: 700, color: "#1e293b", margin: 0 }}>
+                    <p className="text-[11.5px] font-bold text-slate-800 m-0">
                       {exp.position}
                     </p>
-                    <p style={{ fontSize: "10px", color: accentHex, fontWeight: 600, margin: "1px 0" }}>
+                    <p className="text-[10px] font-semibold m-0.5" style={{ color: accentHex }}>
                       {exp.company}
-                      {exp.location && <span style={{ color: "#64748b", fontWeight: 400 }}> · {exp.location}</span>}
+                      {exp.location && <span className="text-slate-500 font-normal"> · {exp.location}</span>}
                     </p>
                   </div>
-                  <span style={{ fontSize: "9.5px", color: "#64748b", whiteSpace: "nowrap", marginLeft: "8px", flexShrink: 0 }}>
+                  <span className="text-[9.5px] text-slate-500 whitespace-nowrap ml-2 shrink-0">
                     {formatPeriod(exp.startMonth, exp.endMonth, exp.current)}
                   </span>
                 </div>
                 {exp.description && (
-                  <p style={{ fontSize: "10px", color: "#475569", margin: "4px 0 3px", lineHeight: 1.5 }}>
+                  <p className="text-[10px] text-slate-600 my-1 leading-relaxed">
                     {exp.description}
                   </p>
                 )}
                 {exp.bullets.filter(Boolean).length > 0 && (
-                  <ul style={{ margin: "3px 0 0 0", paddingLeft: "14px" }}>
+                  <ul className="m-0 pl-3.5 list-disc">
                     {exp.bullets.filter(Boolean).map((b, i) => (
-                      <li key={i} style={{ fontSize: "10px", color: "#475569", lineHeight: 1.5, marginBottom: "2px" }}>
+                      <li key={i} className="text-[10px] text-slate-600 leading-relaxed mb-0.5">
                         {b}
                       </li>
                     ))}
@@ -291,26 +241,26 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
           <div>
             <SectionTitle title="Formations" accentHex={accentHex} />
             {education.map((edu) => (
-              <div key={edu.id} style={{ marginBottom: "10px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div key={edu.id} className="mb-2.5">
+                <div className="flex justify-between items-start">
                   <div>
-                    <p style={{ fontSize: "11px", fontWeight: 700, color: "#1e293b", margin: 0 }}>
+                    <p className="text-[11px] font-bold text-slate-800 m-0">
                       {edu.degree}
                     </p>
-                    <p style={{ fontSize: "10px", color: accentHex, fontWeight: 600, margin: "1px 0" }}>
+                    <p className="text-[10px] font-semibold m-0.5" style={{ color: accentHex }}>
                       {edu.school}
-                      {edu.location && <span style={{ color: "#64748b", fontWeight: 400 }}> · {edu.location}</span>}
+                      {edu.location && <span className="text-slate-500 font-normal"> · {edu.location}</span>}
                     </p>
                     {edu.mention && (
-                      <span style={{ fontSize: "9px", color: "#64748b", fontStyle: "italic" }}>{edu.mention}</span>
+                      <span className="text-[9px] text-slate-500 italic">{edu.mention}</span>
                     )}
                   </div>
-                  <span style={{ fontSize: "9.5px", color: "#64748b", whiteSpace: "nowrap", marginLeft: "8px", flexShrink: 0 }}>
+                  <span className="text-[9.5px] text-slate-500 whitespace-nowrap ml-2 shrink-0">
                     {formatPeriod(edu.startMonth, edu.endMonth, edu.current)}
                   </span>
                 </div>
                 {edu.description && (
-                  <p style={{ fontSize: "10px", color: "#475569", margin: "3px 0 0", lineHeight: 1.5 }}>
+                  <p className="text-[10px] text-slate-600 mt-1 leading-relaxed">
                     {edu.description}
                   </p>
                 )}
@@ -324,30 +274,28 @@ export default function ModernTemplate({ data, accentHex }: ModernTemplateProps)
           <div>
             <SectionTitle title="Projets" accentHex={accentHex} />
             {projects.map((proj) => (
-              <div key={proj.id} style={{ marginBottom: "10px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <p style={{ fontSize: "11px", fontWeight: 700, color: "#1e293b", margin: 0 }}>
+              <div key={proj.id} className="mb-2.5">
+                <div className="flex items-center gap-1.5">
+                  <p className="text-[11px] font-bold text-slate-800 m-0">
                     {proj.title}
                   </p>
                   {proj.link && (
-                    <span style={{ fontSize: "9px", color: accentHex }}>↗ {proj.link}</span>
+                    <span className="text-[9px]" style={{ color: accentHex }}>↗ {proj.link}</span>
                   )}
                 </div>
                 {proj.description && (
-                  <p style={{ fontSize: "10px", color: "#475569", margin: "2px 0", lineHeight: 1.5 }}>
+                  <p className="text-[10px] text-slate-600 my-0.5 leading-relaxed">
                     {proj.description}
                   </p>
                 )}
                 {proj.technologies.length > 0 && (
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "3px", marginTop: "3px" }}>
+                  <div className="flex flex-wrap gap-1 mt-1">
                     {proj.technologies.map((tech, i) => (
-                      <span key={i} style={{
-                        fontSize: "8.5px",
-                        color: accentHex,
-                        border: `1px solid ${accentHex}`,
-                        padding: "1px 5px",
-                        borderRadius: "4px",
-                      }}>
+                      <span
+                        key={i}
+                        className="text-[8.5px] border px-1.5 py-0.5 rounded"
+                        style={{ color: accentHex, borderColor: accentHex }}
+                      >
                         {tech}
                       </span>
                     ))}

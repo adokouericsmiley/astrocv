@@ -8,22 +8,18 @@
 import { useCVStore } from "@/lib/store";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { useState } from "react";
 
 export default function ExperienceSection() {
   const { cv, addExperience, updateExperience, removeExperience, reorderExperiences, addExperienceBullet, updateExperienceBullet, removeExperienceBullet } = useCVStore();
 
-  // items pour le Reorder de Framer Motion (liste d'ids)
-  const [items, setItems] = useState(() => cv.experiences.map((e) => e.id));
+  // Dérive les items directement du store (toujours en sync)
+  const items = cv.experiences.map((e) => e.id);
 
-  // Synchronise le store quand l'ordre change
+  // Synchronise le store quand l'ordre change via drag & drop
   const handleReorder = (newOrder: string[]) => {
-    setItems(newOrder);
-    const currentIds = cv.experiences.map((e) => e.id);
-    // Recalcule les indices from/to pour chaque changement
     newOrder.forEach((id, toIndex) => {
-      const fromIndex = currentIds.indexOf(id);
-      if (fromIndex !== toIndex) {
+      const fromIndex = cv.experiences.findIndex((e) => e.id === id);
+      if (fromIndex !== -1 && fromIndex !== toIndex) {
         reorderExperiences(fromIndex, toIndex);
       }
     });

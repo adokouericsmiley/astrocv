@@ -12,6 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CVData } from "@/lib/types";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import CreativeTemplate from "@/components/templates/CreativeTemplate";
+import TealWaveTemplate from "@/components/templates/TealWaveTemplate";
+import TimelineGreyTemplate from "@/components/templates/TimelineGreyTemplate";
 import { ACCENT_HEX } from "@/components/templates";
 import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
 
@@ -50,6 +52,10 @@ const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
       switch (data.settings.templateId) {
         case "creative":
           return <CreativeTemplate data={data} accentHex={accentHex} />;
+        case "teal_wave":
+          return <TealWaveTemplate data={data} accentHex={accentHex} />;
+        case "timeline_grey":
+          return <TimelineGreyTemplate data={data} accentHex={accentHex} />;
         case "modern":
         default:
           return <ModernTemplate data={data} accentHex={accentHex} />;
@@ -59,15 +65,18 @@ const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
     const finalScale = scale * zoom;
 
     return (
-      <div ref={containerRef} className="preview-panel">
+      <div ref={containerRef} className="preview-panel overflow-x-hidden">
         {/* Toolbar de la preview */}
-        <div className="preview-toolbar no-print" style={{ width: `${A4_WIDTH * finalScale}px` }}>
+        <div
+          className="preview-toolbar no-print"
+          style={{ width: `${Math.round(A4_WIDTH * finalScale)}px`, maxWidth: "100%" }}
+        >
           <span className="flex-1">
             Aperçu A4 — {Math.round(finalScale * 100)}%
           </span>
           {/* Contrôles zoom */}
           <button
-            onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}
+            onClick={() => setZoom((z) => Math.max(0.5, +(z - 0.1).toFixed(2)))}
             className="p-1 hover:text-white transition-colors rounded"
             title="Zoom arrière"
           >
@@ -81,7 +90,7 @@ const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
             <Maximize2 size={12} />
           </button>
           <button
-            onClick={() => setZoom((z) => Math.min(1.5, z + 0.1))}
+            onClick={() => setZoom((z) => Math.min(1.5, +(z + 0.1).toFixed(2)))}
             className="p-1 hover:text-white transition-colors rounded"
             title="Zoom avant"
           >
@@ -90,18 +99,18 @@ const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
         </div>
 
         {/* Feuille A4 zoomable */}
-        <motion.div
+        <div
           style={{
             transform: `scale(${finalScale})`,
             transformOrigin: "top center",
-            // Compense la hauteur perdue par le scale
-            marginBottom: `calc(${finalScale - 1} * 297mm)`,
+            // Compense la hauteur occupée après scale (<1 = réduit le vide, >1 = agrandit)
+            height: `calc(297mm * ${finalScale})`,
+            width: `calc(210mm * ${finalScale})`,
+            flexShrink: 0,
           }}
-          animate={{ scale: finalScale }}
-          transition={{ duration: 0.1 }}
         >
           {/* ref transmis pour react-to-print */}
-          <div ref={ref} className="cv-a4">
+          <div ref={ref} className="cv-a4" style={{ transformOrigin: "top left" }}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={data.settings.templateId}
@@ -114,7 +123,7 @@ const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
               </motion.div>
             </AnimatePresence>
           </div>
-        </motion.div>
+        </div>
       </div>
     );
   }

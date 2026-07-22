@@ -82,7 +82,7 @@ export interface Project {
 }
 
 // ── Paramètres du CV ────────────────────────────────────────
-export type TemplateId = "modern" | "creative" | "classic" | "minimal";
+export type TemplateId = "creative" | "teal_wave" | "timeline_grey" | "modern";
 export type AccentColor =
   | "indigo"
   | "violet"

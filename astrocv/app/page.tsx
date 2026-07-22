@@ -11,6 +11,8 @@ import { useCVStore } from "@/lib/store";
 import CVEditor from "@/components/editor/CVEditor";
 import CVPreview from "@/components/preview/CVPreview";
 import AppHeader from "@/components/ui/AppHeader";
+import LoadingScreen from "@/components/ui/LoadingScreen";
+import MobileNotice from "@/components/ui/MobileNotice";
 
 export default function HomePage() {
   const { cv } = useCVStore();
@@ -25,6 +27,12 @@ export default function HomePage() {
 
   return (
     <div className="app-root">
+      {/* Avertissement mobile / petit écran */}
+      <MobileNotice />
+
+      {/* Écran de chargement / Splash Screen au démarrage */}
+      <LoadingScreen />
+
       {/* Header global */}
       <AppHeader printRef={printRef} />
 
