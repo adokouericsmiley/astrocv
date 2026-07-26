@@ -14,6 +14,9 @@ import ModernTemplate from "@/components/templates/ModernTemplate";
 import CreativeTemplate from "@/components/templates/CreativeTemplate";
 import TealWaveTemplate from "@/components/templates/TealWaveTemplate";
 import TimelineGreyTemplate from "@/components/templates/TimelineGreyTemplate";
+import ExecutiveNavyTemplate from "@/components/templates/ExecutiveNavyTemplate";
+import BannerBlackTemplate from "@/components/templates/BannerBlackTemplate";
+import DiagonalBlueTemplate from "@/components/templates/DiagonalBlueTemplate";
 import { ACCENT_HEX } from "@/components/templates";
 import { ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
 
@@ -50,6 +53,12 @@ const CVPreview = forwardRef<HTMLDivElement, CVPreviewProps>(
     // Rendu du template selon l'ID
     const renderTemplate = () => {
       switch (data.settings.templateId) {
+        case "executive_navy":
+          return <ExecutiveNavyTemplate data={data} accentHex={accentHex} />;
+        case "banner_black":
+          return <BannerBlackTemplate data={data} accentHex={accentHex} />;
+        case "diagonal_blue":
+          return <DiagonalBlueTemplate data={data} accentHex={accentHex} />;
         case "creative":
           return <CreativeTemplate data={data} accentHex={accentHex} />;
         case "teal_wave":

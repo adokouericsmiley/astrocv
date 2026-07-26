@@ -2,15 +2,16 @@
 // ============================================================
 // components/ui/AppHeader.tsx
 // Barre de navigation principale de l'application AstroCV
-// Contient : logo, Galerie de Modèles, sélecteur de thème, export PDF, reset
+// Contient : logo, Galerie de Modèles, Mes CVs, sélecteur de thème, export PDF, reset
 // ============================================================
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { useCVStore } from "@/lib/store";
 import { getPdfFileName } from "@/lib/helpers";
 import ThemeSelector from "./ThemeSelector";
 import TemplateGalleryModal from "./TemplateGalleryModal";
+import SavedCVsModal from "./SavedCVsModal";
 import {
   FileDown,
   RotateCcw,
@@ -18,6 +19,7 @@ import {
   Loader2,
   AlertTriangle,
   LayoutTemplate,
+  FolderOpen,
 } from "lucide-react";
 
 interface AppHeaderProps {
@@ -30,6 +32,7 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
   const [isPrinting, setIsPrinting] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
 
   const fileName = getPdfFileName(cv.personal.firstName, cv.personal.lastName);
 
@@ -89,6 +92,16 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          {/* Bouton Mes CVs (LocalStorage) */}
+          <button
+            onClick={() => setIsSavedModalOpen(true)}
+            className="btn btn-sm btn-outline border-teal-500/30 text-teal-600 hover:bg-teal-600 hover:text-white gap-1.5 text-xs font-semibold"
+            title="Gérer les CVs sauvegardés dans le LocalStorage"
+          >
+            <FolderOpen size={14} />
+            Mes CVs
+          </button>
+
           {/* Bouton Galerie de Modèles */}
           <button
             onClick={() => setIsGalleryOpen(true)}
@@ -145,6 +158,12 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
           </button>
         </div>
       </header>
+
+      {/* Modal Mes CVs (LocalStorage) */}
+      <SavedCVsModal
+        isOpen={isSavedModalOpen}
+        onClose={() => setIsSavedModalOpen(false)}
+      />
 
       {/* Modal Galerie de Modèles */}
       <TemplateGalleryModal

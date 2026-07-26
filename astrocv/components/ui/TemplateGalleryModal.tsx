@@ -30,6 +30,76 @@ export default function TemplateGalleryModal({ isOpen, onClose }: TemplateGaller
   // Miniatures SVG schématiques représentatives de chaque template
   const getThumbnail = (id: TemplateId) => {
     switch (id) {
+      case "executive_navy":
+        return (
+          <div className="w-full h-36 bg-white rounded-lg overflow-hidden relative border border-slate-200 flex">
+            {/* Sidebar bleu nuit avec photo en haut */}
+            <div className="w-1/3 bg-[#1b2535] h-full flex flex-col p-1.5 space-y-1">
+              <div className="w-full h-8 bg-slate-700 rounded-sm mb-1" />
+              <div className="w-full h-1 bg-indigo-400 rounded" />
+              <div className="w-3/4 h-1 bg-slate-500 rounded" />
+              <div className="w-full h-1 bg-slate-500 rounded" />
+            </div>
+            {/* Colonne droite */}
+            <div className="flex-1 p-2 space-y-2">
+              <div>
+                <div className="w-24 h-2 bg-slate-900 rounded font-bold" />
+                <div className="w-16 h-1 bg-slate-400 rounded mt-0.5" />
+              </div>
+              <div className="space-y-1 pt-1">
+                <div className="w-16 h-1.5 bg-indigo-500 rounded" />
+                <div className="w-full h-1 bg-slate-300 rounded" />
+                <div className="w-4/5 h-1 bg-slate-300 rounded" />
+              </div>
+            </div>
+          </div>
+        );
+
+      case "banner_black":
+        return (
+          <div className="w-full h-36 bg-white rounded-lg overflow-hidden relative border border-slate-200 flex flex-col">
+            {/* Header bleu ciel avec photo à gauche */}
+            <div className="w-full h-8 bg-sky-50 flex items-center px-2 border-b border-slate-200 gap-2">
+              <div className="w-6 h-6 bg-slate-300 rounded shrink-0" />
+              <div className="w-20 h-2 bg-slate-900 rounded" />
+            </div>
+            <div className="flex flex-1 p-2 gap-2">
+              <div className="w-1/3 space-y-1">
+                <div className="w-full h-2 bg-slate-900 rounded-sm" />
+                <div className="w-full h-1 bg-slate-300 rounded" />
+                <div className="w-3/4 h-1 bg-slate-300 rounded" />
+              </div>
+              <div className="flex-1 space-y-1.5">
+                <div className="w-full h-2.5 bg-slate-900 rounded-sm" />
+                <div className="w-full h-1 bg-slate-300 rounded" />
+                <div className="w-4/5 h-1 bg-slate-300 rounded" />
+              </div>
+            </div>
+          </div>
+        );
+
+      case "diagonal_blue":
+        return (
+          <div className="w-full h-36 bg-white rounded-lg overflow-hidden relative border border-slate-200 flex flex-col">
+            {/* Header géométrique bleu avec photo circulaire */}
+            <div className="w-full h-9 bg-sky-500 relative flex items-center px-2">
+              <div className="w-6 h-6 rounded-full bg-white border border-slate-200 shadow-sm" />
+              <div className="ml-2 w-20 h-2 bg-white rounded" />
+            </div>
+            <div className="flex flex-1 p-2 gap-2 bg-slate-50">
+              <div className="w-1/3 space-y-1 pt-1">
+                <div className="w-full h-1.5 bg-slate-800 rounded" />
+                <div className="w-full h-1 bg-sky-500 rounded-full" />
+                <div className="w-3/4 h-1 bg-sky-500 rounded-full" />
+              </div>
+              <div className="flex-1 bg-white p-1 space-y-1 rounded border border-slate-200">
+                <div className="w-16 h-1.5 bg-slate-800 rounded" />
+                <div className="w-full h-1 bg-slate-300 rounded" />
+                <div className="w-4/5 h-1 bg-slate-300 rounded" />
+              </div>
+            </div>
+          </div>
+        );
       case "creative":
         return (
           <div className="w-full h-36 bg-slate-100 rounded-lg overflow-hidden relative border border-slate-200 flex">

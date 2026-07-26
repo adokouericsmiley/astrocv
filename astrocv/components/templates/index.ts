@@ -4,8 +4,40 @@
 // ============================================================
 
 import { TemplateId, TemplateDefinition, AccentColor } from "@/lib/types";
+import CreativeTemplate from "./CreativeTemplate";
+import TealWaveTemplate from "./TealWaveTemplate";
+import TimelineGreyTemplate from "./TimelineGreyTemplate";
+import ModernTemplate from "./ModernTemplate";
+import ExecutiveNavyTemplate from "./ExecutiveNavyTemplate";
+import BannerBlackTemplate from "./BannerBlackTemplate";
+import DiagonalBlueTemplate from "./DiagonalBlueTemplate";
+
+export {
+  CreativeTemplate,
+  TealWaveTemplate,
+  TimelineGreyTemplate,
+  ModernTemplate,
+  ExecutiveNavyTemplate,
+  BannerBlackTemplate,
+  DiagonalBlueTemplate,
+};
 
 export const TEMPLATES: TemplateDefinition[] = [
+  {
+    id: "executive_navy",
+    name: "Executive Navy (Thomas Garcia)",
+    description: "Sidebar bleu nuit avec photo portrait, barres de soulignement d'accentuation et section compétences 2 colonnes.",
+  },
+  {
+    id: "banner_black",
+    name: "Banner Block Minimal (Nom Prénom)",
+    description: "Bandeau supérieur bleu ciel, bannières de sections noires avec texte blanc et icônes.",
+  },
+  {
+    id: "diagonal_blue",
+    name: "Diagonal Sky Header (Raphaël Martin)",
+    description: "Découpe géométrique diagonale d'en-tête, photo circulaire cerclée et jauges de langues en pilules.",
+  },
   {
     id: "creative",
     name: "Élégant Leaf (Célia Naudin)",
