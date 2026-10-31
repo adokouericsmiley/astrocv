@@ -59,12 +59,12 @@ export default function ExperienceSection() {
                 <div className="field-group">
                   <div>
                     <label className="field-label">Poste</label>
-                    <input className="field-input" placeholder="Développeur Senior" value={exp.position}
+                    <input className="field-input" placeholder="Intitulé du poste" value={exp.position}
                       onChange={(e) => updateExperience(exp.id, { position: e.target.value })} />
                   </div>
                   <div>
                     <label className="field-label">Entreprise</label>
-                    <input className="field-input" placeholder="Acme Corp" value={exp.company}
+                    <input className="field-input" placeholder="Nom de l'entreprise" value={exp.company}
                       onChange={(e) => updateExperience(exp.id, { company: e.target.value })} />
                   </div>
                 </div>

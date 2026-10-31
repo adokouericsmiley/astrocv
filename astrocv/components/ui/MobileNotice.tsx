@@ -6,7 +6,7 @@
 // ============================================================
 
 import { useEffect, useState } from "react";
-import { Monitor, Smartphone, Sparkles, ArrowRight } from "lucide-react";
+import { Monitor, Smartphone, Info, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function MobileNotice() {
@@ -63,7 +63,7 @@ export default function MobileNotice() {
           {/* Titre */}
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-2">
-              <Sparkles size={13} />
+              <Info size={13} />
               Usage Desktop Requis
             </div>
             <h2 className="text-xl font-black tracking-tight text-white">

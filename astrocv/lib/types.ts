@@ -89,18 +89,60 @@ export type TemplateId =
   | "modern"
   | "executive_navy"
   | "banner_black"
-  | "diagonal_blue";
+  | "diagonal_blue"
+  // Modèles ATS (1 colonne, sans icône ni photo)
+  | "ats_classic"
+  | "ats_modern"
+  | "ats_compact"
+  | "executive_serif"
+  // Modèles professionnels configurables
+  | "sidebar_light"
+  | "sidebar_accent"
+  | "band_header"
+  | "minimal_grid"
+  | "timeline_clean"
+  | "soft_cards"
+  | "dark_sidebar"
+  | "slant_band"
+  | "round_band"
+  | "bold_caps"
+  | "split_header"
+  | "night_timeline"
+  | "pastel_cards"
+  | "studio_grid"
+  | "portrait_studio";
 export type AccentColor =
   | "indigo"
   | "violet"
   | "emerald"
   | "rose"
   | "amber"
-  | "sky";
+  | "sky"
+  | "navy"
+  | "teal"
+  | "burgundy"
+  | "slate"
+  | "orange"
+  | "black";
+
+// Personnalisation de la mise en page
+export type FontFamilyKey =
+  | "default"
+  | "inter" | "poppins" | "montserrat" | "roboto" | "lato" | "opensans" | "raleway" | "nunito" | "sourcesans" | "dmsans" | "playfair" | "merriweather" | "lora"
+  | "arial" | "calibri" | "georgia" | "times";
+export type FontScale = "sm" | "md" | "lg";
+export type Spacing = "compact" | "normal" | "airy";
 
 export interface CVSettings {
   templateId: TemplateId;
   accentColor: AccentColor;
+  customAccent: string;  // Couleur libre "#rrggbb" ("" = utiliser accentColor)
+  fontFamily: FontFamilyKey;
+  fontScale: FontScale;
+  spacing: Spacing;
+  hiddenSections: SectionKey[]; // Sections masquées dans le CV
+  pageCount: 1 | 2 | 3;  // Nombre minimum de pages
+  fillPage: boolean;     // Ajuste les espacements pour remplir les pages
   daisyTheme: string;    // Thème daisyUI global de l'app
   showPhoto: boolean;
   sectionOrder: SectionKey[]; // Ordre des sections dans le CV
@@ -128,9 +170,14 @@ export interface CVData {
 }
 
 // ── Définition d'un template (pour le registre de templates) ──
+export type TemplateCategory = "ats" | "classic" | "modern" | "creative";
+
 export interface TemplateDefinition {
   id: TemplateId;
   name: string;
   description: string;
+  category: TemplateCategory;
+  ats: boolean;        // Lisible par les logiciels de tri de candidatures
+  bestFor: string;     // Métiers / situations recommandés
   preview?: string; // URL de l'image de prévisualisation
 }

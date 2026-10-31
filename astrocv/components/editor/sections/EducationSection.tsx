@@ -51,7 +51,7 @@ export default function EducationSection() {
                 <div className="field-group full">
                   <div>
                     <label className="field-label">Diplôme / Titre</label>
-                    <input className="field-input" placeholder="Master Informatique" value={edu.degree}
+                    <input className="field-input" placeholder="Diplôme ou formation" value={edu.degree}
                       onChange={(e) => updateEducation(edu.id, { degree: e.target.value })} />
                   </div>
                 </div>
@@ -59,7 +59,7 @@ export default function EducationSection() {
                 <div className="field-group">
                   <div>
                     <label className="field-label">Établissement</label>
-                    <input className="field-input" placeholder="Université Paris VI" value={edu.school}
+                    <input className="field-input" placeholder="École, université, centre de formation" value={edu.school}
                       onChange={(e) => updateEducation(edu.id, { school: e.target.value })} />
                   </div>
                   <div>

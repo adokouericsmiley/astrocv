@@ -59,6 +59,7 @@ interface CVStore {
 
   // Paramètres
   updateSettings: (data: Partial<CVData["settings"]>) => void;
+  loadContent: (content: Omit<CVData, "settings">, sectionOrder?: SectionKey[]) => void;
   setTemplate: (id: TemplateId) => void;
   setAccentColor: (color: AccentColor) => void;
   setDaisyTheme: (theme: string) => void;
@@ -326,12 +327,41 @@ export const useCVStore = create<CVStore>()(
           cv: { ...s.cv, settings: { ...s.cv.settings, sectionOrder: order } },
         })),
 
+      // Remplace le contenu (exemple de métier) en gardant le style et la photo
+      loadContent: (content, sectionOrder) =>
+        set((s) => ({
+          cv: {
+            ...content,
+            personal: { ...content.personal, photoUrl: s.cv.personal.photoUrl },
+            settings: {
+              ...s.cv.settings,
+              sectionOrder: sectionOrder ?? defaultCVData.settings.sectionOrder,
+              hiddenSections: [],
+            },
+          },
+        })),
+
       // ── Reset ──
       resetCV: () => set({ cv: defaultCVData }),
     }),
     {
       name: "astrocv-data", // clé localStorage
       storage: createJSONStorage(() => localStorage),
+      version: 2,
+      // Fusionne les réglages enregistrés avec les valeurs par défaut :
+      // les nouveaux réglages existent même pour un CV sauvegardé avant leur ajout.
+      merge: (persisted, current) => {
+        const saved = (persisted as { cv?: Partial<CVData> } | undefined)?.cv;
+        if (!saved) return current;
+        return {
+          ...current,
+          cv: {
+            ...current.cv,
+            ...saved,
+            settings: { ...current.cv.settings, ...saved.settings },
+          },
+        };
+      },
     }
   )
 );

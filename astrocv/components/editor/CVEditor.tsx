@@ -71,7 +71,7 @@ const SECTIONS = [
   },
   {
     id: "projects",
-    label: "Projets",
+    label: "Projets & réalisations",
     icon: FolderGit2,
     component: ProjectsSection,
     color: "text-rose-600",

@@ -168,7 +168,7 @@ export default function PersonalInfoSection() {
 
       {/* Titre professionnel */}
       <div className="field-group full">
-        {field("Titre professionnel", "title", "Ex : Développeur Full-Stack Senior")}
+        {field("Titre professionnel", "title", "Ex : Responsable commercial, Infirmière, Comptable…")}
       </div>
 
       {/* Contact */}
@@ -191,7 +191,7 @@ export default function PersonalInfoSection() {
       {/* Liens */}
       <div className="field-group">
         {field("LinkedIn", "linkedin", "linkedin.com/in/prenom")}
-        {field("GitHub", "github", "github.com/prenom")}
+        {field("GitHub / Portfolio", "github", "github.com/prenom ou lien portfolio")}
       </div>
 
       <div className="field-group full">

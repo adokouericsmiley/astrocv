@@ -2,7 +2,7 @@
 // lib/helpers.ts — Fonctions utilitaires partagées
 // ============================================================
 
-import { SkillLevel, LanguageLevel } from "./types";
+import { SkillLevel, LanguageLevel, CVData, CVSettings, FontFamilyKey } from "./types";
 
 /**
  * Formate une période (mois/année) en chaîne lisible.
@@ -108,7 +108,78 @@ export const ACCENT_COLORS = {
   rose: { label: "Rose", hex: "#f43f5e", tw: "rose" },
   amber: { label: "Ambre", hex: "#f59e0b", tw: "amber" },
   sky: { label: "Ciel", hex: "#0ea5e9", tw: "sky" },
+  navy: { label: "Bleu marine", hex: "#1e3a5f", tw: "blue" },
+  teal: { label: "Sarcelle", hex: "#0f766e", tw: "teal" },
+  burgundy: { label: "Bordeaux", hex: "#7f1d1d", tw: "red" },
+  slate: { label: "Ardoise", hex: "#475569", tw: "slate" },
+  orange: { label: "Orange", hex: "#ea580c", tw: "orange" },
+  black: { label: "Noir", hex: "#111827", tw: "gray" },
 } as const;
+
+/**
+ * Couleur d'accent effective : couleur libre si valide, sinon la palette.
+ */
+export function getAccentHex(settings: Pick<CVSettings, "accentColor" | "customAccent">): string {
+  if (/^#[0-9a-fA-F]{6}$/.test(settings.customAccent ?? "")) return settings.customAccent;
+  return ACCENT_COLORS[settings.accentColor]?.hex ?? ACCENT_COLORS.indigo.hex;
+}
+
+/**
+ * Couleur de texte lisible (blanc ou presque noir) sur un fond donné.
+ */
+export function readableOn(hex: string): string {
+  const m = /^#([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return "#ffffff";
+  const n = parseInt(m[1], 16);
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  return (r * 299 + g * 587 + b * 114) / 1000 > 160 ? "#111827" : "#ffffff";
+}
+
+/**
+ * Retourne une copie du CV où les sections masquées sont vides :
+ * tous les modèles n'affichent que les sections non vides.
+ */
+export function applyHiddenSections(data: CVData): CVData {
+  const hidden = data.settings.hiddenSections ?? [];
+  if (hidden.length === 0) return data;
+  return {
+    ...data,
+    experiences: hidden.includes("experiences") ? [] : data.experiences,
+    education: hidden.includes("education") ? [] : data.education,
+    skills: hidden.includes("skills") ? [] : data.skills,
+    languages: hidden.includes("languages") ? [] : data.languages,
+    projects: hidden.includes("projects") ? [] : data.projects,
+    interests: hidden.includes("interests") ? [] : data.interests,
+  };
+}
+
+/**
+ * Polices disponibles (Google Fonts chargées par next/font + polices système sûres pour les ATS).
+ */
+export const FONT_OPTIONS: { id: FontFamilyKey; label: string; stack: string; group: "sans" | "serif" | "system" }[] = [
+  { id: "default", label: "Selon le modèle", stack: "", group: "system" },
+  { id: "inter", label: "Inter", stack: "var(--font-inter), Inter, sans-serif", group: "sans" },
+  { id: "poppins", label: "Poppins", stack: "var(--font-poppins), Poppins, sans-serif", group: "sans" },
+  { id: "montserrat", label: "Montserrat", stack: "var(--font-montserrat), Montserrat, sans-serif", group: "sans" },
+  { id: "roboto", label: "Roboto", stack: "var(--font-roboto), Roboto, sans-serif", group: "sans" },
+  { id: "lato", label: "Lato", stack: "var(--font-lato), Lato, sans-serif", group: "sans" },
+  { id: "opensans", label: "Open Sans", stack: "var(--font-opensans), 'Open Sans', sans-serif", group: "sans" },
+  { id: "raleway", label: "Raleway", stack: "var(--font-raleway), Raleway, sans-serif", group: "sans" },
+  { id: "nunito", label: "Nunito", stack: "var(--font-nunito), Nunito, sans-serif", group: "sans" },
+  { id: "sourcesans", label: "Source Sans", stack: "var(--font-sourcesans), 'Source Sans 3', sans-serif", group: "sans" },
+  { id: "dmsans", label: "DM Sans", stack: "var(--font-dmsans), 'DM Sans', sans-serif", group: "sans" },
+  { id: "playfair", label: "Playfair Display", stack: "var(--font-playfair), 'Playfair Display', serif", group: "serif" },
+  { id: "merriweather", label: "Merriweather", stack: "var(--font-merriweather), Merriweather, serif", group: "serif" },
+  { id: "lora", label: "Lora", stack: "var(--font-lora), Lora, serif", group: "serif" },
+  { id: "arial", label: "Arial (sûre ATS)", stack: "Arial, Helvetica, sans-serif", group: "system" },
+  { id: "calibri", label: "Calibri (sûre ATS)", stack: "Calibri, Carlito, 'Segoe UI', sans-serif", group: "system" },
+  { id: "georgia", label: "Georgia", stack: "Georgia, 'Times New Roman', serif", group: "system" },
+  { id: "times", label: "Times New Roman", stack: "'Times New Roman', Times, serif", group: "system" },
+];
+
+export const FONT_STACKS = Object.fromEntries(
+  FONT_OPTIONS.map((f) => [f.id, f.stack])
+) as Record<FontFamilyKey, string>;
 
 /**
  * Thèmes daisyUI disponibles pour l'application.

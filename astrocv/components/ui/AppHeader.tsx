@@ -12,14 +12,17 @@ import { getPdfFileName } from "@/lib/helpers";
 import ThemeSelector from "./ThemeSelector";
 import TemplateGalleryModal from "./TemplateGalleryModal";
 import SavedCVsModal from "./SavedCVsModal";
+import ExamplesModal from "./ExamplesModal";
+import Link from "next/link";
+import { LogoMark } from "./Logo";
 import {
   FileDown,
   RotateCcw,
-  Sparkles,
   Loader2,
   AlertTriangle,
   LayoutTemplate,
   FolderOpen,
+  BookUser,
 } from "lucide-react";
 
 interface AppHeaderProps {
@@ -33,6 +36,7 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
+  const [isExamplesOpen, setIsExamplesOpen] = useState(false);
 
   const fileName = getPdfFileName(cv.personal.firstName, cv.personal.lastName);
 
@@ -76,9 +80,9 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
       <header className="no-print flex items-center justify-between px-5 py-2.5 border-b border-base-300 bg-base-100 z-10 shadow-sm">
         {/* Logo */}
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-teal-400 flex items-center justify-center shadow-sm">
-            <Sparkles size={14} className="text-white" />
-          </div>
+          <Link href="/" aria-label="Accueil AstroCV" className="flex">
+            <LogoMark size={30} />
+          </Link>
           <div>
             <span className="text-sm font-extrabold text-base-content tracking-tight">
               astro
@@ -102,13 +106,23 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
             Mes CVs
           </button>
 
+          {/* Bouton Exemples par métier */}
+          <button
+            onClick={() => setIsExamplesOpen(true)}
+            className="btn btn-sm btn-outline border-base-300 text-base-content/70 hover:bg-base-200 gap-1.5 text-xs font-semibold"
+            title="Charger un exemple de CV selon votre métier"
+          >
+            <BookUser size={14} />
+            Exemples
+          </button>
+
           {/* Bouton Galerie de Modèles */}
           <button
             onClick={() => setIsGalleryOpen(true)}
             className="btn btn-sm btn-outline border-indigo-500/30 text-indigo-600 hover:bg-indigo-500 hover:text-white gap-1.5 text-xs font-semibold"
           >
             <LayoutTemplate size={14} />
-            Galerie de Modèles
+            Modèles
           </button>
 
           {/* Sélecteur de thème & accent */}
@@ -164,6 +178,9 @@ export default function AppHeader({ printRef }: AppHeaderProps) {
         isOpen={isSavedModalOpen}
         onClose={() => setIsSavedModalOpen(false)}
       />
+
+      {/* Modal Exemples par métier */}
+      <ExamplesModal isOpen={isExamplesOpen} onClose={() => setIsExamplesOpen(false)} />
 
       {/* Modal Galerie de Modèles */}
       <TemplateGalleryModal

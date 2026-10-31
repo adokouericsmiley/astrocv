@@ -24,7 +24,15 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* app desktop full-height, pas de scroll page */
+}
+
+/* L'éditeur occupe tout l'écran sans scroll de page ; la landing page défile normalement */
+body:has(.app-root) {
+  overflow: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -102,6 +110,9 @@ body {
   position: relative;
   transform-origin: top center;
 }
+
+/* ── Police choisie par l'utilisateur (modèles d'origine inclus) ── */
+.cv-a4[data-font], .cv-a4[data-font] * { font-family: var(--cv-font) !important; }
 
 /* ── Accordéon éditeur ─────────────────────────────────────── */
 .section-accordion {

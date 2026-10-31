@@ -27,12 +27,12 @@ export default function SkillsSection() {
             <div className="field-group">
               <div>
                 <label className="field-label">Compétence</label>
-                <input className="field-input" placeholder="React, TypeScript..." value={skill.name}
+                <input className="field-input" placeholder="Ex : Négociation, Excel, Soins, Cuisine…" value={skill.name}
                   onChange={(e) => updateSkill(skill.id, { name: e.target.value })} />
               </div>
               <div>
                 <label className="field-label">Catégorie</label>
-                <input className="field-input" placeholder="Frontend, Backend..." value={skill.category}
+                <input className="field-input" placeholder="Ex : Technique, Relationnel, Outils…" value={skill.category}
                   onChange={(e) => updateSkill(skill.id, { category: e.target.value })} />
               </div>
             </div>

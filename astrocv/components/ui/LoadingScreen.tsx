@@ -6,7 +6,8 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, CheckCircle2 } from "lucide-react";
+import { LogoMark } from "./Logo";
+import { CheckCircle2 } from "lucide-react";
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,11 +62,9 @@ export default function LoadingScreen() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, type: "spring", stiffness: 150 }}
-              className="w-16 h-16 mb-5 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-teal-400 p-0.5 shadow-2xl shadow-indigo-500/30"
+              className="mb-5 rounded-2xl shadow-2xl shadow-indigo-500/30"
             >
-              <div className="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center">
-                <Sparkles size={32} className="text-teal-400 animate-spin" />
-              </div>
+              <LogoMark size={64} />
             </motion.div>
 
             {/* Titre */}

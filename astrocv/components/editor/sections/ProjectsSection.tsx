@@ -54,14 +54,14 @@ export default function ProjectsSection() {
             <div className="field-group full mb-3">
               <div>
                 <label className="field-label">Titre du projet</label>
-                <input className="field-input" placeholder="Mon Super Projet" value={proj.title}
+                <input className="field-input" placeholder="Projet, réalisation ou mission" value={proj.title}
                   onChange={(e) => updateProject(proj.id, { title: e.target.value })} />
               </div>
             </div>
 
             <div className="mb-3">
               <label className="field-label">Description</label>
-              <textarea className="field-input textarea" rows={2} placeholder="Brève description du projet..."
+              <textarea className="field-input textarea" rows={2} placeholder="Objectif, votre rôle, résultats…"
                 value={proj.description}
                 onChange={(e) => updateProject(proj.id, { description: e.target.value })} />
             </div>
@@ -73,15 +73,15 @@ export default function ProjectsSection() {
                   onChange={(e) => updateProject(proj.id, { link: e.target.value })} />
               </div>
               <div>
-                <label className="field-label">GitHub</label>
-                <input className="field-input" placeholder="github.com/user/repo" value={proj.github}
+                <label className="field-label">Lien complémentaire</label>
+                <input className="field-input" placeholder="github.com/… ou autre lien" value={proj.github}
                   onChange={(e) => updateProject(proj.id, { github: e.target.value })} />
               </div>
             </div>
 
             {/* Technologies (tags) */}
             <div className="mt-3">
-              <label className="field-label">Technologies</label>
+              <label className="field-label">Outils / compétences utilisés</label>
               <div className="flex flex-wrap gap-1.5 mb-2">
                 {proj.technologies.map((tech, ti) => (
                   <span
@@ -98,7 +98,7 @@ export default function ProjectsSection() {
               <div className="flex gap-2">
                 <input
                   className="field-input flex-1"
-                  placeholder="React, Node.js..."
+                  placeholder="Outils, méthodes…"
                   value={techInputs[proj.id] ?? ""}
                   onChange={(e) => setTechInputs((prev) => ({ ...prev, [proj.id]: e.target.value }))}
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTech(proj.id); } }}

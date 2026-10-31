@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from "react";
 import { useCVStore } from "@/lib/store";
+import { defaultCVData } from "@/lib/defaultData";
 import {
   getSavedCVs,
   saveCV,
@@ -27,7 +28,7 @@ import {
   FileText,
   Clock,
   LayoutTemplate,
-  Sparkles,
+  Info,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -73,7 +74,9 @@ export default function SavedCVsModal({ isOpen, onClose }: SavedCVsModalProps) {
 
   // Charge un CV sauvegardé dans le store Zustand
   const handleLoad = (item: SavedCV) => {
-    useCVStore.setState({ cv: item.data });
+    useCVStore.setState({
+      cv: { ...item.data, settings: { ...defaultCVData.settings, ...item.data.settings } },
+    });
     setActiveCVId(item.id);
     showToast(`CV "${item.name}" chargé !`);
     onClose();
@@ -279,7 +282,7 @@ export default function SavedCVsModal({ isOpen, onClose }: SavedCVsModalProps) {
           {/* Footer */}
           <div className="px-6 py-3 border-t border-base-200 bg-base-200/30 flex items-center justify-between text-xs text-base-content/60">
             <span className="flex items-center gap-1">
-              <Sparkles size={13} className="text-teal-500" />
+              <Info size={13} className="text-teal-500" />
               Vos CVs sont sauvegardés uniquement dans votre navigateur local.
             </span>
             <button onClick={onClose} className="btn btn-sm btn-ghost">
